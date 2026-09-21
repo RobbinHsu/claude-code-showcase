@@ -1,7 +1,7 @@
 # Dependencies
 node_modules/
 
-# Build output
+# Build 輸出
 dist/
 build/
 
@@ -20,7 +20,7 @@ build/
 .DS_Store
 Thumbs.db
 
-# Claude Code local files
+# Claude Code 本機檔案
 .claude/settings.local.json
 .claude/user-team-info.json
 .claude/tasks/

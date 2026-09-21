@@ -2,12 +2,12 @@ name: Scheduled - Code Quality Review
 
 on:
   schedule:
-    # Run every Sunday at 8 AM UTC
+    # 每週日 08:00 UTC 執行
     - cron: '0 8 * * 0'
   workflow_dispatch:
     inputs:
       num_dirs:
-        description: 'Number of random directories to review'
+        description: '要 review 的隨機 directories 數量'
         required: false
         default: '3'
 
@@ -28,27 +28,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Select random directories
+      - name: 選擇隨機 directories
         id: select
         run: |
           NUM_DIRS="${{ github.event.inputs.num_dirs || '3' }}"
 
-          # Find directories in src that have TypeScript files
+          # 找出 src 中含 TypeScript files 的 directories
           DIRS=$(find src -type d -exec sh -c 'ls "$1"/*.ts "$1"/*.tsx 2>/dev/null | grep -v -E "\.(test|spec|stories)\." | head -1' _ {} \; 2>/dev/null | \
             xargs -I {} dirname {} | \
             sort -u | \
             shuf -n "$NUM_DIRS")
 
           if [ -z "$DIRS" ]; then
-            echo "No suitable directories found"
+            echo "沒有找到合適的 directories"
             echo "directories=[]" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          # Convert to JSON array
+          # 轉成 JSON array
           JSON_DIRS=$(echo "$DIRS" | jq -R -s -c 'split("\n") | map(select(length > 0))')
           echo "directories=$JSON_DIRS" >> $GITHUB_OUTPUT
-          echo "Selected directories:"
+          echo "選到的 directories："
           echo "$DIRS"
 
   review-directory:
@@ -92,50 +92,50 @@ jobs:
           branch_prefix: claude/code-quality-
           track_progress: true
           prompt: |
-            # Weekly Code Quality Review
+            # 每週 Code Quality Review
 
-            You are performing a scheduled code quality review of a specific directory.
+            你正在對特定 directory 執行排程的 code quality review。
 
-            ## Target Directory
-            **Review: `${{ matrix.directory }}`**
+            ## 目標 Directory
+            **Review：`${{ matrix.directory }}`**
 
-            ## Your Tasks
+            ## 你的任務
 
-            1. **Read the code review standards**: Read `.claude/agents/code-reviewer.md` for the full checklist
+            1. **讀取 code review standards**：讀取 `.claude/agents/code-reviewer.md` 取得完整 checklist
 
-            2. **Analyze all files in the directory**:
-               - List all .ts and .tsx files (excluding .test., .spec., .stories.)
-               - Read each file thoroughly
-               - Apply the review checklist
+            2. **分析 directory 中所有 files**：
+               - 列出所有 .ts 與 .tsx files（排除 .test.、.spec.、.stories.）
+               - 完整閱讀每個 file
+               - 套用 review checklist
 
-            3. **Focus on finding and FIXING issues**:
-               - TypeScript strict mode violations (any types, missing types)
-               - React anti-patterns (bad useEffect, unnecessary memoization)
-               - Code style issues (mutations, deep nesting, poor naming)
+            3. **聚焦找出並修正 issues**：
+               - TypeScript strict mode violations（any types、missing types）
+               - React anti-patterns（bad useEffect、unnecessary memoization）
+               - Code style issues（mutations、deep nesting、poor naming）
                - Missing error handling
                - Security issues
                - Performance problems
 
-            4. **Make the fixes yourself**:
-               - Don't just report issues - FIX THEM
-               - Use Edit tool to update files
-               - Ensure fixes don't break anything
+            4. **自行修正**：
+               - 不只回報 issues，直接修正
+               - 使用 Edit tool 更新 files
+               - 確保 fixes 不會破壞功能
 
-            5. **Run verification**:
-               - `npm run lint` - verify no lint errors introduced
-               - If errors occur, fix them or revert changes
+            5. **執行驗證**：
+               - `npm run lint` - 確認沒有新增 lint errors
+               - 如果有 errors，修正或 revert changes
 
-            6. **Create PR if fixes were made**:
-               - Create a branch from main
-               - Commit all fixes with descriptive message
-               - PR title: "fix(${{ matrix.directory }}): code quality improvements"
-               - PR body should list fixes applied
+            6. **如果有 fixes 就建立 PR**：
+               - 從 main 建立 branch
+               - Commit 所有 fixes
+               - PR title："fix(${{ matrix.directory }}): code quality improvements"
+               - PR body 列出套用的 fixes
 
             ## Guidelines
-            - Be thorough but focused on this directory only
-            - Fix issues that are clear improvements
-            - Don't refactor working code just for style
-            - If no issues found, report that and skip PR creation
+            - 完整檢查，但只聚焦這個 directory
+            - 只修明確的改善
+            - 不要只為 style refactor 正常 code
+            - 如果沒找到 issues，回報結果並略過 PR
           claude_args: |
             --max-turns 35
             --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git:*),Bash(gh:*),Bash(npm run lint*)"
@@ -147,11 +147,11 @@ jobs:
     steps:
       - name: Summary
         run: |
-          echo "## Code Quality Review Complete" >> $GITHUB_STEP_SUMMARY
+          echo "## Code Quality Review 完成" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Reviewed directories:" >> $GITHUB_STEP_SUMMARY
+          echo "Reviewed directories：" >> $GITHUB_STEP_SUMMARY
           echo '${{ needs.select-directories.outputs.directories }}' | jq -r '.[]' | while read dir; do
             echo "- \`$dir\`" >> $GITHUB_STEP_SUMMARY
           done
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Check for any PRs created by this workflow." >> $GITHUB_STEP_SUMMARY
+          echo "請檢查此 workflow 建立的 PR。" >> $GITHUB_STEP_SUMMARY

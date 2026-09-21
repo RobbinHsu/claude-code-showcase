@@ -2,12 +2,12 @@ name: Scheduled - Documentation Sync
 
 on:
   schedule:
-    # Run on the 1st of every month at 9 AM UTC
+    # 每月 1 日 09:00 UTC 執行
     - cron: '0 9 1 * *'
   workflow_dispatch:
     inputs:
       days_back:
-        description: 'Number of days to look back for changes'
+        description: '往回查看 changes 的天數'
         required: false
         default: '30'
 
@@ -28,15 +28,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check for code changes in period
+      - name: 檢查期間內的 code changes
         id: check-changes
         run: |
           DAYS_BACK="${{ github.event.inputs.days_back || '30' }}"
           SINCE_DATE=$(date -d "-${DAYS_BACK} days" +%Y-%m-%d)
 
-          echo "Checking for changes since: $SINCE_DATE"
+          echo "檢查自此日期起的 changes：$SINCE_DATE"
 
-          # Get changed code files (excluding docs themselves)
+          # 取得 changed code files（排除 docs 本身）
           CHANGED_FILES=$(git log --since="$SINCE_DATE" --name-only --pretty=format: -- \
             '*.ts' '*.tsx' '*.js' '*.jsx' \
             ':!*.test.*' ':!*.spec.*' ':!*.stories.*' \
@@ -44,13 +44,13 @@ jobs:
 
           if [ -z "$CHANGED_FILES" ]; then
             echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No code changes found in the last $DAYS_BACK days"
+            echo "過去 $DAYS_BACK 天沒有找到 code changes"
           else
             echo "has_changes=true" >> $GITHUB_OUTPUT
             echo "changed_files<<EOF" >> $GITHUB_OUTPUT
             echo "$CHANGED_FILES" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
-            echo "Found $(echo "$CHANGED_FILES" | wc -l) changed files"
+            echo "找到 $(echo "$CHANGED_FILES" | wc -l) 個 changed files"
           fi
 
           echo "since_date=$SINCE_DATE" >> $GITHUB_OUTPUT
@@ -66,51 +66,51 @@ jobs:
           branch_prefix: claude/docs-sync-
           track_progress: true
           prompt: |
-            # Monthly Documentation Sync
+            # 每月 Documentation Sync
 
-            You are running a scheduled documentation sync. Code has changed since ${{ steps.check-changes.outputs.since_date }}.
+            你正在執行排程的 documentation sync。自 ${{ steps.check-changes.outputs.since_date }} 起，code 已有 changes。
 
             ## Changed Files
-            The following code files have been modified:
+            以下 code files 已被修改：
             ```
             ${{ steps.check-changes.outputs.changed_files }}
             ```
 
-            ## Your Tasks
+            ## 你的任務
 
-            1. **Analyze Changes**: Review the changed files to understand what functionality was added, modified, or removed.
+            1. **分析 Changes**：Review changed files，了解新增、修改或移除了哪些 functionality。
 
-            2. **Find Related Documentation**: Search for documentation that might be affected:
+            2. **尋找相關 Documentation**：搜尋可能受影響的文件：
                - `/docs/` directory
                - README.md files
-               - TSDoc comments in the code
+               - Code 中的 TSDoc comments
 
-            3. **Check for Actual Problems**: For each code change, determine if existing docs are now WRONG:
-               - Do code examples still work?
-               - Are API signatures/types now incorrect?
-               - Are prop interfaces outdated?
+            3. **檢查真正的問題**：針對每個 code change，判斷現有 docs 是否已經錯誤：
+               - Code examples 還能運作嗎？
+               - API signatures/types 是否已不正確？
+               - Prop interfaces 是否過期？
 
-            4. **Fix Only What's Broken**: If you find documentation that is actually wrong:
-               - Fix incorrect code examples
-               - Update wrong API signatures and types
-               - Add docs ONLY for significant new features that have zero documentation
+            4. **只修壞掉的內容**：如果找到真的錯誤：
+               - 修正不正確的 code examples
+               - 更新錯誤的 API signatures 與 types
+               - 只有重大新功能完全沒有文件時，才新增 docs
 
-            5. **Create a PR**: If you made any changes:
-               - Create a new branch from main
-               - Commit all documentation updates
-               - Create a PR with a summary of what was fixed
+            5. **建立 PR**：如果有修改：
+               - 從 main 建立新 branch
+               - Commit 所有 documentation updates
+               - 建立 PR，摘要修正內容
 
-            ## CRITICAL Guidelines
-            - Documentation is a LIVING DOCUMENT - only fix things that are actually WRONG
-            - DO NOT add changelog-style entries
-            - ONLY update docs when they are incorrect or misleading
-            - If no problems are found, report that and DO NOT create a PR
+            ## 關鍵 Guidelines
+            - Documentation 是 LIVING DOCUMENT，只修真正錯誤的內容
+            - 不要加入 changelog-style entries
+            - 只有 docs 不正確或會誤導時才更新
+            - 如果沒找到問題，回報結果且不要建立 PR
           claude_args: |
             --max-turns 30
             --allowedTools "Read,Write,Edit,Glob,Grep,Bash(git:*),Bash(gh:*)"
 
-      - name: Report no changes
+      - name: 回報沒有 changes
         if: steps.check-changes.outputs.has_changes == 'false'
         run: |
-          echo "No code changes found in the last ${{ github.event.inputs.days_back || '30' }} days."
-          echo "Skipping documentation sync."
+          echo "過去 ${{ github.event.inputs.days_back || '30' }} 天沒有找到 code changes。"
+          echo "略過 documentation sync。"

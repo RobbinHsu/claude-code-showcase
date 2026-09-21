@@ -1,8 +1,8 @@
-# User-specific configuration
+# 使用者專屬設定
 user-team-info.json
 
-# Local settings (personal overrides)
+# 本機 settings（個人覆寫）
 settings.local.json
 
-# Task-specific context
+# Task 專屬 context
 tasks/

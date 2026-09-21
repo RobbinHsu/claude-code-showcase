@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   review:
-    # Run on PR events, or on issue comments that mention @claude
+    # 在 PR event 執行，或 issue comment 提到 @claude 時執行
     if: |
       github.event_name == 'pull_request' ||
       (github.event_name == 'issue_comment' &&
@@ -25,26 +25,26 @@ jobs:
        contains(github.event.comment.body, '@claude'))
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository (PR event)
+      - name: Checkout repository（PR event）
         if: github.event_name == 'pull_request'
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
-      - name: Checkout repository (issue_comment event)
+      - name: Checkout repository（issue_comment event）
         if: github.event_name == 'issue_comment'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Checkout PR branch (issue_comment event)
+      - name: Checkout PR branch（issue_comment event）
         if: github.event_name == 'issue_comment'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr checkout ${{ github.event.issue.number }}
 
-      - name: Get PR base branch
+      - name: 取得 PR base branch
         id: pr-info
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -64,12 +64,12 @@ jobs:
           timeout_minutes: 30
           track_progress: true
           prompt: |
-            Review this Pull Request using the standards in .claude/agents/code-reviewer.md
+            使用 .claude/agents/code-reviewer.md 中的標準 review 這個 Pull Request。
 
-            1. Read .claude/agents/code-reviewer.md for the full checklist
-            2. Run `git diff origin/${{ steps.pr-info.outputs.base_ref }}...HEAD` to see changes
-            3. Apply the review checklist to modified files
-            4. Provide feedback organized by severity (Critical, Warning, Suggestion)
+            1. 讀取 .claude/agents/code-reviewer.md 取得完整 checklist
+            2. 執行 `git diff origin/${{ steps.pr-info.outputs.base_ref }}...HEAD` 查看 changes
+            3. 將 review checklist 套用到 modified files
+            4. 依 severity（Critical、Warning、Suggestion）組織 feedback
           claude_args: |
             --max-turns 10
             --allowedTools "Read,Glob,Grep,Bash(git:*),Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
