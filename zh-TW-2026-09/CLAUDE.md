@@ -1,15 +1,16 @@
-# Project Name
+# 專案名稱
 
-> This is an example CLAUDE.md file showing how to configure Claude Code for your project.
+> 這是一份依 2026 年 9 月 Claude Code 能力整理的專案設定範例。
 
-## Quick Facts
+## 快速資訊
 
-- **Stack**: React, TypeScript, Node.js
-- **Test Command**: `npm test`
-- **Lint Command**: `npm run lint`
-- **Build Command**: `npm run build`
+- **技術棧**：React、TypeScript、Node.js
+- **測試**：`npm test`
+- **Lint**：`npm run lint`
+- **Build**：`npm run build`
+- **Type Check**：`npm run typecheck`
 
-## Key Directories
+## 主要目錄
 
 - `src/components/` - React components
 - `src/hooks/` - Custom React hooks
@@ -17,64 +18,55 @@
 - `src/api/` - API client code
 - `tests/` - Test files
 
-## Code Style
+## 程式碼規則
 
-- TypeScript strict mode enabled
-- Prefer `interface` over `type` (except unions/intersections)
-- No `any` - use `unknown` instead
-- Use early returns, avoid nested conditionals
-- Prefer composition over inheritance
+- TypeScript strict mode
+- 優先使用 `interface`；union/intersection 才使用 `type`
+- 不使用 `any`，改用 `unknown`
+- 優先 early return，避免深層巢狀條件
+- Composition 優於 inheritance
+- 錯誤不能靜默吞掉
+- UI 必須處理 loading、error、empty、success
+- Async mutation 期間停用 trigger，並提供失敗 feedback
 
-## Git Conventions
+## Git / Worktree
 
-- **Branch naming**: `{initials}/{description}` (e.g., `jd/fix-login`)
-- **Commit format**: Conventional Commits (`feat:`, `fix:`, `docs:`, etc.)
-- **PR titles**: Same as commit format
+- Branch：`{initials}/{description}`
+- Commit：Conventional Commits
+- 不直接修改 `main` / `master`
+- 需要平行開發時，可使用 `claude --worktree <name>`；Claude Code 預設 worktree 位於 `.claude/worktrees/`
 
-## Critical Rules
+## Skills
 
-### Error Handling
-- NEVER swallow errors silently
-- Always show user feedback for errors
-- Log errors for debugging
+Claude Code 會依 skill 的 `description` / `when_to_use` 自動選擇相關 skill；不需要額外維護 keyword-based skill router。
 
-### UI States
-- Always handle: loading, error, empty, success states
-- Show loading ONLY when no data exists
-- Every list needs an empty state
+常用 skills：
+- Tests → `testing-patterns`
+- Forms → `formik-patterns`
+- GraphQL → `graphql-schema`
+- Debugging → `systematic-debugging`
+- UI → `react-ui-patterns`
+- Ticket → `ticket`
+- PR review → `pr-review`
 
-### Mutations
-- Disable buttons during async operations
-- Show loading indicator on buttons
-- Always have onError handler with user feedback
+## Subagents
 
-## Testing
+對可獨立處理、需要不同 context 或可平行執行的工作使用 subagent：
+- `code-reviewer`：changes 完成後做獨立 code review
+- `github-workflow`：處理 branch、commit、PR workflow
 
-- Write failing test first (TDD)
-- Use factory pattern: `getMockX(overrides)`
-- Test behavior, not implementation
-- Run tests before committing
+避免讓多個 agent 同時修改同一批檔案。需要隔離修改時，優先使用 `isolation: worktree`。
 
-## Skill Activation
+## 驗證
 
-Before implementing ANY task, check if relevant skills apply:
+宣稱完成前至少執行：
+1. `npm run lint`
+2. `npm run typecheck`
+3. 相關 tests
+4. 檢查 `git diff`，確認沒有非預期 changes
 
-- Creating tests → `testing-patterns` skill
-- Building forms → `formik-patterns` skill
-- GraphQL operations → `graphql-schema` skill
-- Debugging issues → `systematic-debugging` skill
-- UI components → `react-ui-patterns` skill
+## 安全
 
-## Common Commands
-
-```bash
-# Development
-npm run dev          # Start dev server
-npm test             # Run tests
-npm run lint         # Run linter
-npm run typecheck    # Check types
-
-# Git
-npm run commit       # Interactive commit
-gh pr create         # Create PR
-```
+- 不讀取或 commit `.env`、`secrets/` 等敏感檔案
+- 重大／不可逆 action 必須保留 human approval
+- MCP credential 只透過 environment variables / OAuth 提供

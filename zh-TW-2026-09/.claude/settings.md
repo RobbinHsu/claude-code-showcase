@@ -1,66 +1,61 @@
-# Claude Code Settings Documentation
+# Claude Code Settings（2026-09）
 
-## Environment Variables
+這份設定採用目前 Claude Code 的 hook / permission / cross-session 行為。
 
-- `INSIDE_CLAUDE_CODE`: "1" - Indicates code is running inside Claude Code
-- `BASH_DEFAULT_TIMEOUT_MS`: Default timeout for bash commands (7 minutes)
-- `BASH_MAX_TIMEOUT_MS`: Maximum timeout for bash commands
+## Permissions
+
+`.claude/settings.json` 使用 `permissions.deny` 明確禁止 Claude 讀取：
+- `.env` / `.env.*`
+- `secrets/**`
+
+這類限制應放在 permission system，而不是只依賴 prompt。
 
 ## Hooks
 
-### UserPromptSubmit
+### PreToolUse：保護 main/master
 
-- **Skill Evaluation**: Analyzes prompts and suggests relevant skills
-  - **Script**: `.claude/hooks/skill-eval.sh`
-  - **Behavior**: Matches keywords, file paths, and patterns to suggest skills
+`.claude/hooks/protect-main.js` 會：
+1. 從 stdin 讀取 Claude Code 傳入的 JSON。
+2. 只處理 `Edit` / `Write`。
+3. 取得目前 Git branch。
+4. 如果是 `main` 或 `master`，回傳目前格式的 `hookSpecificOutput.permissionDecision = "deny"`。
 
-### PreToolUse
+### PostToolUse：背景驗證
 
-- **Main Branch Protection**: Prevents edits on main branch (5s timeout)
-  - **Triggers**: Before editing files with Edit, MultiEdit, or Write tools
-  - **Behavior**: Blocks file edits when on main branch, suggests creating feature branch
+`.claude/hooks/post-edit-checks.js` 以 `async: true` 背景執行，不阻塞每次 edit：
+- JS/TS：`prettier --check`
+- TS/TSX：`tsc --noEmit`
+- test file：執行 related tests
 
-### PostToolUse
+Hook input 不再依賴舊式 `CLAUDE_TOOL_INPUT_FILE_PATH`，而是從 stdin JSON 的 `tool_input.file_path` 取得路徑。
 
-1. **Code Formatting**: Auto-format JS/TS files (30s timeout)
-   - **Triggers**: After editing `.js`, `.jsx`, `.ts`, `.tsx` files
-   - **Command**: `npx prettier --write` (or Biome)
-   - **Behavior**: Formats code, shows feedback if errors found
+## 為什麼移除自訂 skill-eval hook
 
-2. **NPM Install**: Auto-install after package.json changes (60s timeout)
-   - **Triggers**: After editing `package.json` files
-   - **Command**: `npm install`
-   - **Behavior**: Installs dependencies, fails edit if installation fails
+目前 Skills 本身已具備：
+- `description` / `when_to_use` 自動選擇
+- `disable-model-invocation` 控制只允許 user 手動觸發
+- `user-invocable` 控制 menu 顯示
+- `context: fork` 在獨立 subagent context 執行
+- supporting files 與 dynamic context
 
-3. **Test Runner**: Run tests after test file changes (90s timeout)
-   - **Triggers**: After editing `.test.js`, `.test.jsx`, `.test.ts`, `.test.tsx` files
-   - **Command**: `npm test -- --findRelatedTests <file> --passWithNoTests`
-   - **Behavior**: Runs related tests, shows results, non-blocking
+因此一般專案不需要再維護 keyword regex、confidence score 與 skill-rules.json。只有非常特殊的 deterministic routing 才值得自行加 router。
 
-4. **TypeScript Check**: Type-check TS/TSX files (30s timeout)
-   - **Triggers**: After editing `.ts`, `.tsx` files
-   - **Command**: `npx tsc --noEmit`
-   - **Behavior**: Shows first errors only, non-blocking
+## Cross-session messaging
 
-## Hook Response Format
+`crossSessionInbound: "hold"` 代表其他 Claude Code session 傳入的訊息先保留，不直接打斷目前工作。這項能力需 Claude Code 支援 cross-session messaging 的平台／版本。
 
-```json
-{
-  "feedback": "Message to show",
-  "suppressOutput": true,
-  "block": true,
-  "continue": false
-}
+## Worktree
+
+平行修改時可使用：
+
+```bash
+claude --worktree feature-auth
 ```
 
-## Environment Variables in Hooks
+預設位置是 `.claude/worktrees/<name>/`，本 repo 已將 `.claude/worktrees/` 加入 `.gitignore`。
 
-- `$CLAUDE_TOOL_INPUT_FILE_PATH`: File being edited
-- `$CLAUDE_TOOL_NAME`: Tool being used
-- `$CLAUDE_PROJECT_DIR`: Project root directory
+Subagent 也可透過 frontmatter 的 `isolation: worktree` 使用獨立 worktree。
 
-## Exit Codes
+## Agent Teams
 
-- `0`: Success
-- `1`: Non-blocking error (shows feedback)
-- `2`: Blocking error (PreToolUse only - blocks the action)
+Agent Teams 是可讓多個 Claude teammate 共享 task list 與 mailbox 的較高階 orchestration；目前仍屬 experimental。適合真正能切成獨立 workstream 的任務，不適合多個 agent 同時修改同一批檔案。

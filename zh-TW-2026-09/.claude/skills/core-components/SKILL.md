@@ -1,17 +1,17 @@
 ---
 name: core-components
-description: Core component library and design system patterns. Use when building UI, using design tokens, or working with the component library.
+description: Core component library 與 design system patterns。建立 UI、使用 design tokens 或使用 component library 時使用。
 ---
 
 # Core Components
 
-## Design System Overview
+## Design System 總覽
 
-Use components from your core library instead of raw platform components. This ensures consistent styling and behavior.
+使用 core library 的 components，而不是 raw platform components。這可確保 styling 與 behavior 一致。
 
 ## Design Tokens
 
-**NEVER hard-code values. Always use design tokens.**
+**絕對不要 hard-code values，一律使用 design tokens。**
 
 ### Spacing Tokens
 
@@ -44,10 +44,10 @@ Use components from your core library instead of raw platform components. This e
 <Box backgroundColor="rgb(245, 245, 245)" />
 ```
 
-| Semantic Token | Use For |
-|----------------|---------|
-| `$textPrimary` | Main text |
-| `$textSecondary` | Supporting text |
+| Semantic Token | 用途 |
+|----------------|------|
+| `$textPrimary` | 主要文字 |
+| `$textSecondary` | 輔助文字 |
 | `$textTertiary` | Disabled/hint text |
 | `$primary500` | Brand/accent color |
 | `$statusError` | Error states |
@@ -72,7 +72,7 @@ Use components from your core library instead of raw platform components. This e
 
 ### Box
 
-Base layout component with token support:
+支援 token 的基本 layout component：
 
 ```tsx
 <Box
@@ -86,7 +86,7 @@ Base layout component with token support:
 
 ### HStack / VStack
 
-Horizontal and vertical flex layouts:
+水平與垂直 flex layouts：
 
 ```tsx
 <HStack gap="$3" alignItems="center">
@@ -102,7 +102,7 @@ Horizontal and vertical flex layouts:
 
 ### Text
 
-Typography with token support:
+支援 token 的 typography：
 
 ```tsx
 <Text
@@ -116,7 +116,7 @@ Typography with token support:
 
 ### Button
 
-Interactive button with variants:
+有 variants 的 interactive button：
 
 ```tsx
 <Button
@@ -130,8 +130,8 @@ Interactive button with variants:
 </Button>
 ```
 
-| Variant | Use For |
-|---------|---------|
+| Variant | 用途 |
+|---------|------|
 | `solid` | Primary actions |
 | `outline` | Secondary actions |
 | `ghost` | Tertiary/subtle actions |
@@ -139,7 +139,7 @@ Interactive button with variants:
 
 ### Input
 
-Form input with validation:
+帶 validation 的 form input：
 
 ```tsx
 <Input
@@ -153,7 +153,7 @@ Form input with validation:
 
 ### Card
 
-Content container:
+Content container：
 
 ```tsx
 <Card padding="$4" gap="$3">
@@ -236,7 +236,7 @@ import { Box, Text } from 'components/core';
 
 ## Component Props Pattern
 
-When creating components, use token-based props:
+建立 components 時，使用 token-based props：
 
 ```tsx
 interface CardProps {
@@ -257,8 +257,8 @@ const Card = ({ padding = '$4', variant = 'elevated', children }: CardProps) => 
 );
 ```
 
-## Integration with Other Skills
+## 與其他 Skills 整合
 
-- **react-ui-patterns**: Use core components for UI states
-- **testing-patterns**: Mock core components in tests
-- **storybook**: Document component variants
+- **react-ui-patterns**：UI states 使用 core components
+- **testing-patterns**：Tests 中 mock core components
+- **storybook**：記錄 component variants

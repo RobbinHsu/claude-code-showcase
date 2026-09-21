@@ -1,23 +1,23 @@
 ---
 name: react-ui-patterns
-description: Modern React UI patterns for loading states, error handling, and data fetching. Use when building UI components, handling async data, or managing UI states.
+description: 現代 React UI patterns，涵蓋 loading states、error handling 與 data fetching。建立 UI components、處理 async data 或管理 UI states 時使用。
 ---
 
 # React UI Patterns
 
-## Core Principles
+## 核心原則
 
-1. **Never show stale UI** - Loading spinners only when actually loading
-2. **Always surface errors** - Users must know when something fails
-3. **Optimistic updates** - Make the UI feel instant
-4. **Progressive disclosure** - Show content as it becomes available
-5. **Graceful degradation** - Partial data is better than no data
+1. **不要顯示 stale UI** - 真的 loading 時才顯示 spinner
+2. **一定要呈現 errors** - 使用者必須知道失敗了
+3. **Optimistic updates** - 讓 UI 感覺即時
+4. **Progressive disclosure** - Content 可用時就逐步顯示
+5. **Graceful degradation** - Partial data 比完全沒資料好
 
 ## Loading State Patterns
 
-### The Golden Rule
+### 黃金規則
 
-**Show loading indicator ONLY when there's no data to display.**
+**只有沒有 data 可顯示時，才顯示 loading indicator。**
 
 ```typescript
 // CORRECT - Only show loading when no data exists
@@ -54,16 +54,16 @@ Do we have data?
 
 ### Skeleton vs Spinner
 
-| Use Skeleton When | Use Spinner When |
+| 使用 Skeleton | 使用 Spinner |
 |-------------------|------------------|
-| Known content shape | Unknown content shape |
+| Content shape 已知 | Content shape 未知 |
 | List/card layouts | Modal actions |
 | Initial page load | Button submissions |
 | Content placeholders | Inline operations |
 
 ## Error Handling Patterns
 
-### The Error Handling Hierarchy
+### Error Handling Hierarchy
 
 ```
 1. Inline error (field-level) → Form validation errors
@@ -72,9 +72,9 @@ Do we have data?
 4. Full error screen → Unrecoverable, needs user action
 ```
 
-### Always Show Errors
+### 一定要顯示 Errors
 
-**CRITICAL: Never swallow errors silently.**
+**CRITICAL：絕不默默吞掉 errors。**
 
 ```typescript
 // CORRECT - Error always surfaced to user
@@ -131,9 +131,9 @@ const ErrorState = ({ error, onRetry, title }: ErrorStateProps) => (
 </Button>
 ```
 
-### Disable During Operations
+### Operation 執行中 Disable
 
-**CRITICAL: Always disable triggers during async operations.**
+**CRITICAL：async operation 期間一定要 disable trigger。**
 
 ```tsx
 // CORRECT - Button disabled while loading
@@ -155,7 +155,7 @@ const ErrorState = ({ error, onRetry, title }: ErrorStateProps) => (
 
 ### Empty State Requirements
 
-Every list/collection MUST have an empty state:
+每個 list/collection 都必須有 empty state：
 
 ```tsx
 // WRONG - No empty state
@@ -269,21 +269,21 @@ onError: (error) => {
 
 ## Checklist
 
-Before completing any UI component:
+完成任何 UI component 前：
 
-**UI States:**
-- [ ] Error state handled and shown to user
-- [ ] Loading state shown only when no data exists
-- [ ] Empty state provided for collections
-- [ ] Buttons disabled during async operations
-- [ ] Buttons show loading indicator when appropriate
+**UI States：**
+- [ ] Error state 已處理並顯示給 user
+- [ ] 只有沒有 data 時才顯示 loading state
+- [ ] Collection 有 empty state
+- [ ] Async operation 期間 buttons disabled
+- [ ] 適當時 buttons 顯示 loading indicator
 
-**Data & Mutations:**
-- [ ] Mutations have onError handler
-- [ ] All user actions have feedback (toast/visual)
+**Data & Mutations：**
+- [ ] Mutations 有 onError handler
+- [ ] 所有 user actions 都有 feedback（toast/visual）
 
-## Integration with Other Skills
+## 與其他 Skills 整合
 
-- **graphql-schema**: Use mutation patterns with proper error handling
-- **testing-patterns**: Test all UI states (loading, error, empty, success)
-- **formik-patterns**: Apply form submission patterns
+- **graphql-schema**：使用有正確 error handling 的 mutation patterns
+- **testing-patterns**：測試所有 UI states（loading、error、empty、success）
+- **formik-patterns**：套用 form submission patterns

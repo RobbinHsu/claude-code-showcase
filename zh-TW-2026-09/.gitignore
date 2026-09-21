@@ -5,10 +5,11 @@ node_modules/
 dist/
 build/
 
-# Environment
+# Environment / secrets
 .env
 .env.local
 .env.*.local
+secrets/
 
 # IDE
 .idea/
@@ -24,4 +25,6 @@ Thumbs.db
 .claude/settings.local.json
 .claude/user-team-info.json
 .claude/tasks/
+.claude/worktrees/
+.claude/agent-memory-local/
 CLAUDE.local.md

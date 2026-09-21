@@ -1,29 +1,29 @@
 ---
 name: systematic-debugging
-description: Four-phase debugging methodology with root cause analysis. Use when investigating bugs, fixing test failures, or troubleshooting unexpected behavior. Emphasizes NO FIXES WITHOUT ROOT CAUSE FIRST.
+description: 四階段 debugging methodology 與 root cause analysis。調查 bug、修 test failure、排查 unexpected behavior 時使用。強調「先找到 root cause，才能修」。
 ---
 
 # Systematic Debugging
 
-## Core Principle
+## 核心原則
 
-**NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.**
+**沒有先做 ROOT CAUSE INVESTIGATION，就不要開始修。**
 
-Never apply symptom-focused patches that mask underlying problems. Understand WHY something fails before attempting to fix it.
+不要用只處理 symptom 的 patch 掩蓋底層問題。嘗試修正之前，先理解問題為什麼發生。
 
-## The Four-Phase Framework
+## 四階段 Framework
 
-### Phase 1: Root Cause Investigation
+### Phase 1：Root Cause Investigation
 
-Before touching any code:
+碰任何 code 之前：
 
-1. **Read error messages thoroughly** - Every word matters
-2. **Reproduce the issue consistently** - If you can't reproduce it, you can't verify a fix
-3. **Examine recent changes** - What changed before this started failing?
-4. **Gather diagnostic evidence** - Logs, stack traces, state dumps
-5. **Trace data flow** - Follow the call chain to find where bad values originate
+1. **完整閱讀 error message** - 每個字都有意義
+2. **穩定重現問題** - 不能重現，就無法驗證 fix
+3. **檢查近期變更** - 問題開始前改了什麼？
+4. **收集 diagnostic evidence** - Logs、stack traces、state dumps
+5. **追 data flow** - 沿 call chain 找到錯誤 value 的來源
 
-**Root Cause Tracing Technique:**
+**Root Cause Tracing Technique：**
 ```
 1. Observe the symptom - Where does the error manifest?
 2. Find immediate cause - Which code directly produces the error?
@@ -32,56 +32,56 @@ Before touching any code:
 5. Find original trigger - Where did the problem actually start?
 ```
 
-**Key principle:** Never fix problems solely where errors appear—always trace to the original trigger.
+**關鍵原則：** 不要只在 error 出現的位置修；一定要追到 original trigger。
 
-### Phase 2: Pattern Analysis
+### Phase 2：Pattern Analysis
 
-1. **Locate working examples** - Find similar code that works correctly
-2. **Compare implementations completely** - Don't just skim
-3. **Identify differences** - What's different between working and broken?
-4. **Understand dependencies** - What does this code depend on?
+1. **找 working examples** - 找相似、但能正常運作的 code
+2. **完整比較 implementations** - 不要只 skim
+3. **找差異** - Working 與 broken 哪裡不同？
+4. **理解 dependencies** - 這段 code 依賴什麼？
 
-### Phase 3: Hypothesis and Testing
+### Phase 3：Hypothesis and Testing
 
-Apply the scientific method:
+套用 scientific method：
 
-1. **Formulate ONE clear hypothesis** - "The error occurs because X"
-2. **Design minimal test** - Change ONE variable at a time
-3. **Predict the outcome** - What should happen if hypothesis is correct?
-4. **Run the test** - Execute and observe
-5. **Verify results** - Did it behave as predicted?
-6. **Iterate or proceed** - Refine hypothesis if wrong, implement if right
+1. **提出一個清楚 hypothesis** - 「error 發生是因為 X」
+2. **設計最小測試** - 一次只改一個 variable
+3. **預測結果** - Hypothesis 正確時應發生什麼？
+4. **執行測試** - Execute and observe
+5. **驗證結果** - 是否符合預測？
+6. **迭代或繼續** - 猜錯就 refine hypothesis；猜對才 implement
 
-### Phase 4: Implementation
+### Phase 4：Implementation
 
-1. **Create failing test case** - Captures the bug behavior
-2. **Implement single fix** - Address root cause, not symptoms
-3. **Verify test passes** - Confirms fix works
-4. **Run full test suite** - Ensure no regressions
-5. **If fix fails, STOP** - Re-evaluate hypothesis
+1. **建立 failing test case** - 捕捉 bug behavior
+2. **只做一個 fix** - 修 root cause，不修 symptom
+3. **確認 test passes** - 證明 fix 有效
+4. **跑完整 test suite** - 確認沒有 regression
+5. **如果 fix 失敗，就 STOP** - 重新檢視 hypothesis
 
-**Critical rule:** If THREE or more fixes fail consecutively, STOP. This signals architectural problems requiring discussion, not more patches.
+**關鍵規則：** 如果連續三次或更多 fix 都失敗，停止。這通常代表 architecture problem，需要討論，而不是繼續 patch。
 
-## Red Flags - Process Violations
+## Red Flags - 流程違規
 
-Stop immediately if you catch yourself thinking:
+如果發現自己在想以下事情，立即停下：
 
-- "Quick fix for now, investigate later"
-- "One more fix attempt" (after multiple failures)
-- "This should work" (without understanding why)
-- "Let me just try..." (without hypothesis)
-- "It works on my machine" (without investigating difference)
+- 「先 quick fix，之後再查」
+- 「再試一個 fix」（已失敗多次之後）
+- 「這應該會 work」（但不知道為什麼）
+- 「我先試試看…」（沒有 hypothesis）
+- 「我的 machine 可以」（沒有調查差異）
 
-## Warning Signs of Deeper Problems
+## 更深層問題的警訊
 
-**Consecutive fixes revealing new problems in different areas** indicates architectural issues:
+**連續 fix 不斷在不同區域暴露新問題**，通常表示 architecture issue：
 
-- Stop patching
-- Document what you've found
-- Discuss with team before proceeding
-- Consider if the design needs rethinking
+- 停止 patch
+- 記錄目前 findings
+- 繼續前先和 team 討論
+- 思考 design 是否需要重做
 
-## Common Debugging Scenarios
+## 常見 Debugging 情境
 
 ### Test Failures
 
@@ -103,7 +103,7 @@ Stop immediately if you catch yourself thinking:
 5. Add validation at the source
 ```
 
-### "It worked before"
+### 「以前可以」
 
 ```
 1. Use git bisect to find the breaking commit
@@ -124,27 +124,27 @@ Stop immediately if you catch yourself thinking:
 
 ## Debugging Checklist
 
-Before claiming a bug is fixed:
+宣稱 bug 已修好之前：
 
-- [ ] Root cause identified and documented
-- [ ] Hypothesis formed and tested
-- [ ] Fix addresses root cause, not symptoms
-- [ ] Failing test created that reproduces bug
-- [ ] Test now passes with fix
-- [ ] Full test suite passes
-- [ ] No "quick fix" rationalization used
-- [ ] Fix is minimal and focused
+- [ ] Root cause 已找出並記錄
+- [ ] 已建立並測試 hypothesis
+- [ ] Fix 處理 root cause，不是 symptom
+- [ ] 已建立能重現 bug 的 failing test
+- [ ] Fix 後 test 已通過
+- [ ] 完整 test suite 通過
+- [ ] 沒有使用「quick fix」合理化
+- [ ] Fix 最小且聚焦
 
 ## Success Metrics
 
-Systematic debugging achieves ~95% first-time fix rate vs ~40% with ad-hoc approaches.
+Systematic debugging 可達到約 95% first-time fix rate，相較 ad-hoc approach 約 40%。
 
-Signs you're doing it right:
-- Fixes don't create new bugs
-- You can explain WHY the bug occurred
-- Similar bugs don't recur
-- Code is better after the fix, not just "working"
+做對時的跡象：
+- Fix 不會創造新 bug
+- 你能解釋 bug 為什麼發生
+- 相似 bug 不會反覆出現
+- Fix 後 code 變得更好，而不只是「能跑」
 
-## Integration with Other Skills
+## 與其他 Skills 整合
 
-- **testing-patterns**: Create test that reproduces the bug before fixing
+- **testing-patterns**：修 bug 前先建立能重現 bug 的 test
