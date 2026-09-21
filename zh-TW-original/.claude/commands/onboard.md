@@ -1,22 +1,22 @@
 # Onboard
 
-You are given the following context:
+你會取得以下 context：
 $ARGUMENTS
 
-## Instructions
+## 指示
 
-> "AI models are geniuses who start from scratch on every task." – Noam Brown
+> 「AI models 是每次接到 task 都從零開始的天才。」– Noam Brown
 
-Your job is to **onboard** yourself to the current task.
+你的工作是讓自己完成目前 task 的 **onboarding**。
 
-Do this by:
+方式如下：
 
-- Using extended thinking
-- Exploring the codebase
-- Asking me questions if needed
+- 使用 extended thinking
+- 探索 codebase
+- 必要時詢問我問題
 
-The goal is to get you fully prepared to start working on the task.
+目標是讓你完全準備好開始處理 task。
 
-Take as long as you need to get yourself ready. Overdoing it is better than underdoing it.
+花你需要的時間準備。做過頭也比準備不足好。
 
-Record everything in a `.claude/tasks/[TASK_ID]/onboarding.md` file. This file will be used to onboard you to the task in a new session if needed, so make sure it's comprehensive.
+把所有內容記錄到 `.claude/tasks/[TASK_ID]/onboarding.md`。如果之後需要在新的 session 重新進入這個 task，這個檔案會用來讓你完成 onboarding，因此請確保內容完整。

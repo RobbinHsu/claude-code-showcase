@@ -1,32 +1,32 @@
 ---
-description: Check if documentation is in sync with code
+description: 檢查 documentation 是否與 code 同步
 allowed-tools: Read, Glob, Grep, Bash(git:*)
 ---
 
 # Documentation Sync
 
-Check if documentation matches the current code state.
+檢查 documentation 是否符合目前 code state。
 
-## Instructions
+## 指示
 
-1. **Find recent code changes**:
+1. **尋找近期 code changes**：
    ```bash
    git log --since="30 days ago" --name-only --pretty=format: -- "*.ts" "*.tsx" | sort -u
    ```
 
-2. **Find related documentation**:
-   - Search `/docs/` for files mentioning changed code
-   - Check README files near changed code
-   - Look for TSDoc comments in changed files
+2. **尋找相關 documentation**：
+   - 搜尋 `/docs/` 中提到 changed code 的 files
+   - 檢查 changed code 附近的 README files
+   - 尋找 changed files 中的 TSDoc comments
 
-3. **Verify documentation accuracy**:
-   - Do code examples still work?
-   - Are API signatures correct?
-   - Are prop types up to date?
+3. **驗證 documentation 正確性**：
+   - Code examples 還能運作嗎？
+   - API signatures 正確嗎？
+   - Prop types 有更新嗎？
 
-4. **Report only actual problems**:
-   - Documentation is a living document
-   - Only flag things that are WRONG, not missing
-   - Don't suggest documentation for documentation's sake
+4. **只回報真正的問題**：
+   - Documentation 是 living document
+   - 只標示「錯誤」內容，不是缺少內容
+   - 不要為了文件而建議新增文件
 
-5. **Output a checklist** of documentation that needs updating
+5. **輸出需要更新的 documentation checklist**

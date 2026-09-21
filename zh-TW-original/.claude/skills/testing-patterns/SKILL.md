@@ -1,35 +1,35 @@
 ---
 name: testing-patterns
-description: Jest testing patterns, factory functions, mocking strategies, and TDD workflow. Use when writing unit tests, creating test factories, or following TDD red-green-refactor cycle.
+description: Jest 測試模式、factory functions、mocking strategies 與 TDD workflow。撰寫 unit tests、建立 test factories，或遵循 TDD red-green-refactor cycle 時使用。
 ---
 
-# Testing Patterns and Utilities
+# Testing Patterns 與 Utilities
 
-## Testing Philosophy
+## 測試哲學
 
-**Test-Driven Development (TDD):**
-- Write failing test FIRST
-- Implement minimal code to pass
-- Refactor after green
-- Never write production code without a failing test
+**Test-Driven Development（TDD）：**
+- 先寫會失敗的 test
+- 實作能通過測試的最少程式碼
+- Green 後再 refactor
+- 沒有 failing test，就不要先寫 production code
 
-**Behavior-Driven Testing:**
-- Test behavior, not implementation
-- Focus on public APIs and business requirements
-- Avoid testing implementation details
-- Use descriptive test names that describe behavior
+**Behavior-Driven Testing：**
+- 測試行為，不測 implementation
+- 聚焦 public APIs 與 business requirements
+- 避免測試 implementation details
+- 使用能描述行為的 test name
 
-**Factory Pattern:**
-- Create `getMockX(overrides?: Partial<X>)` functions
-- Provide sensible defaults
-- Allow overriding specific properties
-- Keep tests DRY and maintainable
+**Factory Pattern：**
+- 建立 `getMockX(overrides?: Partial<X>)` functions
+- 提供合理 default values
+- 允許 override 特定 properties
+- 讓 tests 保持 DRY、好維護
 
 ## Test Utilities
 
-### Custom Render Function
+### 自訂 Render Function
 
-Create a custom render that wraps components with required providers:
+建立 custom render，包上 components 所需的 providers：
 
 ```typescript
 // src/utils/testUtils.tsx
@@ -43,7 +43,7 @@ export const renderWithTheme = (ui: React.ReactElement) => {
 };
 ```
 
-**Usage:**
+**用法：**
 ```typescript
 import { renderWithTheme } from 'utils/testUtils';
 import { screen } from '@testing-library/react-native';
@@ -111,7 +111,7 @@ it('should display admin badge for admin users', () => {
 
 ## Mocking Patterns
 
-### Mocking Modules
+### Mock Modules
 
 ```typescript
 // Mock entire module
@@ -128,7 +128,7 @@ jest.mock('utils/analytics', () => ({
 const mockLogEvent = jest.requireMock('utils/analytics').Analytics.logEvent;
 ```
 
-### Mocking GraphQL Hooks
+### Mock GraphQL Hooks
 
 ```typescript
 jest.mock('./GetItems.generated', () => ({
@@ -204,9 +204,9 @@ it('should submit form on button click', async () => {
 });
 ```
 
-## Anti-Patterns to Avoid
+## 應避免的 Anti-Patterns
 
-### Testing Mock Behavior Instead of Real Behavior
+### 測 Mock 行為，而非真實行為
 
 ```typescript
 // Bad - testing the mock
@@ -216,7 +216,7 @@ expect(mockFetchData).toHaveBeenCalled();
 expect(screen.getByText('John Doe')).toBeTruthy();
 ```
 
-### Not Using Factories
+### 不使用 Factories
 
 ```typescript
 // Bad - duplicated, inconsistent test data
@@ -231,16 +231,16 @@ it('test 2', () => {
 const user = getMockUser({ name: 'Custom Name' });
 ```
 
-## Best Practices
+## 最佳實務
 
-1. **Always use factory functions** for props and data
-2. **Test behavior, not implementation**
-3. **Use descriptive test names**
-4. **Organize with describe blocks**
-5. **Clear mocks between tests**
-6. **Keep tests focused** - one behavior per test
+1. props 與 data **一律使用 factory functions**
+2. **測試行為，不測 implementation**
+3. 使用能描述行為的 test names
+4. 使用 describe blocks 組織 tests
+5. tests 之間清除 mocks
+6. tests 要聚焦，一個 test 測一個行為
 
-## Running Tests
+## 執行 Tests
 
 ```bash
 # Run all tests
@@ -253,7 +253,7 @@ npm run test:coverage
 npm test ComponentName.test.tsx
 ```
 
-## Integration with Other Skills
+## 與其他 Skills 整合
 
-- **react-ui-patterns**: Test all UI states (loading, error, empty, success)
-- **systematic-debugging**: Write test that reproduces bug before fixing
+- **react-ui-patterns**：測試所有 UI states（loading、error、empty、success）
+- **systematic-debugging**：修 bug 前先寫能重現 bug 的 test

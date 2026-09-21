@@ -1,11 +1,11 @@
 ---
 name: formik-patterns
-description: Formik form handling with validation patterns. Use when building forms, implementing validation, or handling form submission.
+description: 使用 validation patterns 的 Formik form handling。建立 forms、實作 validation 或處理 form submission 時使用。
 ---
 
 # Formik Patterns
 
-## Basic Form Setup
+## 基本 Form Setup
 
 ```tsx
 import { useFormik } from 'formik';
@@ -63,7 +63,7 @@ const LoginForm = () => {
 
 ## Validation Schemas
 
-### Common Patterns
+### 常見 Patterns
 
 ```typescript
 import * as yup from 'yup';
@@ -149,7 +149,7 @@ const getFieldProps = (name: keyof typeof formik.values) => ({
 />
 ```
 
-## Form Submission with GraphQL
+## 使用 GraphQL 的 Form Submission
 
 ```tsx
 const CreateItemForm = () => {
@@ -191,7 +191,7 @@ const CreateItemForm = () => {
 };
 ```
 
-## Edit Form with Initial Values
+## 使用 Initial Values 的 Edit Form
 
 ```tsx
 const EditItemForm = ({ item }: { item: Item }) => {
@@ -355,8 +355,8 @@ onSubmit: async (values, { setSubmitting }) => {
 }
 ```
 
-## Integration with Other Skills
+## 與其他 Skills 整合
 
-- **graphql-schema**: Mutation submission patterns
-- **react-ui-patterns**: Loading/error states
-- **testing-patterns**: Test form validation and submission
+- **graphql-schema**：Mutation submission patterns
+- **react-ui-patterns**：Loading/error states
+- **testing-patterns**：測試 form validation 與 submission

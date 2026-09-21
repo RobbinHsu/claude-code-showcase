@@ -1,23 +1,23 @@
 ---
 name: github-workflow
-description: Git workflow agent for commits, branches, and PRs. Use for creating commits, managing branches, and creating pull requests following project conventions.
+description: Git workflow agent，處理 commits、branches 與 PRs。建立 commit、管理 branch、依專案慣例建立 pull request 時使用。
 model: sonnet
 ---
 
-GitHub workflow assistant for managing git operations.
+用來管理 git operations 的 GitHub workflow assistant。
 
-## Branch Naming
+## Branch 命名
 
-Format: `{initials}/{description}`
+格式：`{initials}/{description}`
 
-Examples:
+範例：
 - `jd/fix-login-button`
 - `jd/add-user-profile`
 - `jd/refactor-api-client`
 
 ## Commit Messages
 
-Use Conventional Commits format:
+使用 Conventional Commits 格式：
 
 ```
 <type>[optional scope]: <description>
@@ -26,15 +26,15 @@ Use Conventional Commits format:
 ```
 
 ### Types
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation only
-- `style`: Formatting, no code change
-- `refactor`: Code change that neither fixes nor adds
-- `test`: Adding or updating tests
-- `chore`: Maintenance tasks
+- `feat`：新功能
+- `fix`：Bug fix
+- `docs`：只有文件
+- `style`：格式調整，沒有 code change
+- `refactor`：既不是修 bug 也不是新增功能的 code change
+- `test`：新增或更新 tests
+- `chore`：維護工作
 
-### Examples
+### 範例
 ```
 feat(auth): add password reset flow
 fix(cart): prevent duplicate item addition
@@ -43,32 +43,32 @@ refactor(api): extract common fetch logic
 test(user): add profile update tests
 ```
 
-## Creating a Commit
+## 建立 Commit
 
-1. Check status:
+1. 檢查狀態：
    ```bash
    git status
    git diff --staged
    ```
 
-2. Stage changes:
+2. Stage changes：
    ```bash
    git add <files>
    ```
 
-3. Create commit with conventional format:
+3. 使用 conventional format 建立 commit：
    ```bash
    git commit -m "type(scope): description"
    ```
 
-## Creating a Pull Request
+## 建立 Pull Request
 
-1. Push branch:
+1. Push branch：
    ```bash
    git push -u origin <branch-name>
    ```
 
-2. Create PR:
+2. 建立 PR：
    ```bash
    gh pr create --title "type(scope): description" --body "$(cat <<'EOF'
    ## Summary
@@ -81,18 +81,18 @@ test(user): add profile update tests
    )"
    ```
 
-## PR Title Format
+## PR Title 格式
 
-Same as commit messages:
+與 commit messages 相同：
 - `feat(auth): add OAuth2 support`
 - `fix(api): handle timeout errors`
 - `refactor(components): simplify button variants`
 
 ## Workflow Checklist
 
-Before creating PR:
-- [ ] Branch name follows convention
-- [ ] Commits use conventional format
-- [ ] Tests pass locally
-- [ ] No lint errors
-- [ ] Changes are focused (single concern)
+建立 PR 前：
+- [ ] Branch name 符合慣例
+- [ ] Commits 使用 conventional format
+- [ ] 本機 tests 通過
+- [ ] 沒有 lint errors
+- [ ] Changes 聚焦單一 concern

@@ -1,33 +1,33 @@
 ---
-description: Run code quality checks on a directory
+description: 對指定目錄執行 code quality checks
 allowed-tools: Read, Glob, Grep, Bash(npm:*), Bash(npx:*)
 ---
 
 # Code Quality Review
 
-Review code quality in: $ARGUMENTS
+Review 此目錄的 code quality：$ARGUMENTS
 
-## Instructions
+## 指示
 
-1. **Identify files to review**:
-   - Find all `.ts` and `.tsx` files in the directory
-   - Exclude test files and generated files
+1. **找出要 review 的 files**：
+   - 找出目錄內所有 `.ts` 與 `.tsx` files
+   - 排除 test files 與 generated files
 
-2. **Run automated checks**:
+2. **執行 automated checks**：
    ```bash
    npm run lint -- $ARGUMENTS
    npm run typecheck
    ```
 
-3. **Manual review checklist**:
-   - [ ] No TypeScript `any` types
-   - [ ] Proper error handling
-   - [ ] Loading states handled correctly
-   - [ ] Empty states for lists
-   - [ ] Mutations have onError handlers
-   - [ ] Buttons disabled during async operations
+3. **Manual review checklist**：
+   - [ ] 沒有 TypeScript `any` types
+   - [ ] 有適當 error handling
+   - [ ] Loading states 處理正確
+   - [ ] Lists 有 empty states
+   - [ ] Mutations 有 onError handlers
+   - [ ] Async operations 期間 buttons 會 disabled
 
-4. **Report findings** organized by severity:
-   - Critical (must fix)
-   - Warning (should fix)
-   - Suggestion (could improve)
+4. 依 severity **回報 findings**：
+   - Critical（一定要修）
+   - Warning（應該修）
+   - Suggestion（可改善）

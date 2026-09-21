@@ -1,80 +1,80 @@
-# Project Name
+# 專案名稱
 
-> This is an example CLAUDE.md file showing how to configure Claude Code for your project.
+> 這是一份 CLAUDE.md 範例，示範如何為你的專案設定 Claude Code。
 
-## Quick Facts
+## 快速資訊
 
-- **Stack**: React, TypeScript, Node.js
-- **Test Command**: `npm test`
-- **Lint Command**: `npm run lint`
-- **Build Command**: `npm run build`
+- **技術棧**：React、TypeScript、Node.js
+- **測試指令**：`npm test`
+- **Lint 指令**：`npm run lint`
+- **Build 指令**：`npm run build`
 
-## Key Directories
+## 主要目錄
 
 - `src/components/` - React components
-- `src/hooks/` - Custom React hooks
+- `src/hooks/` - 自訂 React hooks
 - `src/utils/` - Utility functions
 - `src/api/` - API client code
 - `tests/` - Test files
 
-## Code Style
+## 程式碼風格
 
-- TypeScript strict mode enabled
-- Prefer `interface` over `type` (except unions/intersections)
-- No `any` - use `unknown` instead
-- Use early returns, avoid nested conditionals
-- Prefer composition over inheritance
+- 啟用 TypeScript strict mode
+- 優先使用 `interface` 而非 `type`（union/intersection 除外）
+- 不使用 `any`，改用 `unknown`
+- 使用 early return，避免巢狀 conditional
+- 優先 composition，而非 inheritance
 
-## Git Conventions
+## Git 慣例
 
-- **Branch naming**: `{initials}/{description}` (e.g., `jd/fix-login`)
-- **Commit format**: Conventional Commits (`feat:`, `fix:`, `docs:`, etc.)
-- **PR titles**: Same as commit format
+- **Branch 命名**：`{initials}/{description}`（例如 `jd/fix-login`）
+- **Commit 格式**：Conventional Commits（`feat:`、`fix:`、`docs:` 等）
+- **PR 標題**：與 commit 格式相同
 
-## Critical Rules
+## 關鍵規則
 
-### Error Handling
-- NEVER swallow errors silently
-- Always show user feedback for errors
-- Log errors for debugging
+### 錯誤處理
+- 絕對不要默默吞掉錯誤
+- 發生錯誤時一定要提供使用者 feedback
+- 記錄錯誤以供 debugging
 
-### UI States
-- Always handle: loading, error, empty, success states
-- Show loading ONLY when no data exists
-- Every list needs an empty state
+### UI 狀態
+- 一定要處理 loading、error、empty、success 狀態
+- 只有在沒有資料時才顯示 loading
+- 每個 list 都需要 empty state
 
 ### Mutations
-- Disable buttons during async operations
-- Show loading indicator on buttons
-- Always have onError handler with user feedback
+- async operation 執行期間停用按鈕
+- 按鈕要顯示 loading indicator
+- 一定要有附帶 user feedback 的 onError handler
 
-## Testing
+## 測試
 
-- Write failing test first (TDD)
-- Use factory pattern: `getMockX(overrides)`
-- Test behavior, not implementation
-- Run tests before committing
+- 先寫會失敗的測試（TDD）
+- 使用 factory pattern：`getMockX(overrides)`
+- 測試行為，而不是實作細節
+- commit 前執行 tests
 
-## Skill Activation
+## Skill 啟用
 
-Before implementing ANY task, check if relevant skills apply:
+實作任何 task 前，先檢查是否有相關 skills：
 
-- Creating tests → `testing-patterns` skill
-- Building forms → `formik-patterns` skill
+- 建立 tests → `testing-patterns` skill
+- 建立 forms → `formik-patterns` skill
 - GraphQL operations → `graphql-schema` skill
 - Debugging issues → `systematic-debugging` skill
 - UI components → `react-ui-patterns` skill
 
-## Common Commands
+## 常用指令
 
 ```bash
 # Development
-npm run dev          # Start dev server
-npm test             # Run tests
-npm run lint         # Run linter
-npm run typecheck    # Check types
+npm run dev          # 啟動 dev server
+npm test             # 執行 tests
+npm run lint         # 執行 linter
+npm run typecheck    # 檢查 types
 
 # Git
 npm run commit       # Interactive commit
-gh pr create         # Create PR
+gh pr create         # 建立 PR
 ```

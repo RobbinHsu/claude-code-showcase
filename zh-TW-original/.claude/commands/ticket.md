@@ -1,72 +1,72 @@
 ---
-description: Work on a JIRA/Linear ticket end-to-end
+description: 從頭到尾處理一張 JIRA/Linear ticket
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(git:*), Bash(gh:*), Bash(npm:*), mcp__jira__*, mcp__github__*, mcp__linear__*
 ---
 
 # Ticket Workflow
 
-Work on ticket: $ARGUMENTS
+處理 ticket：$ARGUMENTS
 
-## Instructions
+## 指示
 
-### 1. Read the Ticket
+### 1. 讀取 Ticket
 
-First, fetch and understand the ticket:
+先取得並理解 ticket：
 
 ```
-Use the JIRA/Linear MCP tools to:
-- Get ticket details (title, description, acceptance criteria)
-- Check linked tickets or epics
-- Review any comments or attachments
+使用 JIRA/Linear MCP tools：
+- 取得 ticket details（title、description、acceptance criteria）
+- 檢查 linked tickets 或 epics
+- Review comments 或 attachments
 ```
 
-Summarize:
-- What needs to be done
+摘要：
+- 需要完成什麼
 - Acceptance criteria
-- Any blockers or dependencies
+- 任何 blocker 或 dependency
 
-### 2. Explore the Codebase
+### 2. 探索 Codebase
 
-Before coding:
-- Search for related code
-- Understand the current implementation
-- Identify files that need changes
+開始 coding 前：
+- 搜尋相關 code
+- 理解目前 implementation
+- 找出需要修改的 files
 
-### 3. Create a Branch
+### 3. 建立 Branch
 
 ```bash
 git checkout -b {initials}/{ticket-id}-{brief-description}
 ```
 
-### 4. Implement the Changes
+### 4. 實作 Changes
 
-- Follow project patterns (check relevant skills)
-- Write tests first (TDD)
-- Make incremental commits
+- 遵循 project patterns（檢查相關 skills）
+- 先寫 tests（TDD）
+- 做 incremental commits
 
-### 5. Update the Ticket
+### 5. 更新 Ticket
 
-As you work:
-- Add comments with progress updates
-- Update status (In Progress → In Review)
-- Log any blockers or questions
+工作過程：
+- 加入 progress update comments
+- 更新 status（In Progress → In Review）
+- 記錄 blocker 或 question
 
-### 6. Create PR and Link
+### 6. 建立 PR 並連結
 
-When ready:
-- Create PR with `gh pr create`
-- Link the PR to the ticket
-- Add ticket ID to PR title: `feat(PROJ-123): description`
+準備完成時：
+- 用 `gh pr create` 建立 PR
+- 將 PR 連到 ticket
+- PR title 加上 ticket ID：`feat(PROJ-123): description`
 
-### 7. If You Find a Bug
+### 7. 如果發現 Bug
 
-If you discover an unrelated bug while working:
-1. Create a new ticket with details
-2. Link it to the current ticket if related
-3. Note it in the PR description
-4. Continue with original task
+工作途中若發現無關 bug：
+1. 建立新 ticket 並附 details
+2. 若相關，連到目前 ticket
+3. 在 PR description 記錄
+4. 繼續原本 task
 
-## Example Workflow
+## Workflow 範例
 
 ```
 Me: /ticket PROJ-123

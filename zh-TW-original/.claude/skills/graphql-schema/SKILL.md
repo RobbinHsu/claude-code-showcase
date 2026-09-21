@@ -1,16 +1,16 @@
 ---
 name: graphql-schema
-description: GraphQL queries, mutations, and code generation patterns. Use when creating GraphQL operations, working with Apollo Client, or generating types.
+description: GraphQL queries、mutations 與 code generation patterns。建立 GraphQL operations、使用 Apollo Client 或產生 types 時使用。
 ---
 
 # GraphQL Schema Patterns
 
-## Core Rules
+## 核心規則
 
-1. **NEVER inline `gql` literals** - Create `.gql` files
-2. **ALWAYS run codegen** after creating/modifying `.gql` files
-3. **ALWAYS add `onError` handler** to mutations
-4. **Use generated hooks** - Never write raw Apollo hooks
+1. **絕對不要 inline `gql` literals** - 建立 `.gql` files
+2. 建立或修改 `.gql` files 後，**一定要執行 codegen**
+3. Mutation **一定要加入 `onError` handler**
+4. **使用 generated hooks** - 不要直接寫 raw Apollo hooks
 
 ## File Structure
 
@@ -26,9 +26,9 @@ src/
         └── CreateItem.gql         # Shared mutations
 ```
 
-## Creating a Query
+## 建立 Query
 
-### Step 1: Create .gql file
+### Step 1：建立 .gql file
 
 ```graphql
 # src/components/ItemList/GetItems.gql
@@ -42,13 +42,13 @@ query GetItems($limit: Int, $offset: Int) {
 }
 ```
 
-### Step 2: Run codegen
+### Step 2：執行 codegen
 
 ```bash
 npm run gql:typegen
 ```
 
-### Step 3: Import and use generated hook
+### Step 3：Import 並使用 generated hook
 
 ```typescript
 import { useGetItemsQuery } from './GetItems.generated';
@@ -66,9 +66,9 @@ const ItemList = () => {
 };
 ```
 
-## Creating a Mutation
+## 建立 Mutation
 
-### Step 1: Create .gql file
+### Step 1：建立 .gql file
 
 ```graphql
 # src/graphql/mutations/CreateItem.gql
@@ -81,13 +81,13 @@ mutation CreateItem($input: CreateItemInput!) {
 }
 ```
 
-### Step 2: Run codegen
+### Step 2：執行 codegen
 
 ```bash
 npm run gql:typegen
 ```
 
-### Step 3: Use with REQUIRED error handling
+### Step 3：使用時一定要有 error handling
 
 ```typescript
 import { useCreateItemMutation } from 'graphql/mutations/CreateItem.generated';
@@ -130,12 +130,12 @@ const CreateItemForm = () => {
 
 ## Mutation UI Requirements
 
-**CRITICAL: Every mutation trigger must:**
+**CRITICAL：每個 mutation trigger 都必須：**
 
-1. **Be disabled during mutation** - Prevent double-clicks
-2. **Show loading state** - Visual feedback
-3. **Have onError handler** - User knows it failed
-4. **Show success feedback** - User knows it worked
+1. **Mutation 期間 disabled** - 防止 double-click
+2. **顯示 loading state** - 提供視覺 feedback
+3. **有 onError handler** - 讓 user 知道失敗
+4. **顯示 success feedback** - 讓 user 知道成功
 
 ```typescript
 // CORRECT - Complete mutation pattern
@@ -162,14 +162,14 @@ const [submit, { loading }] = useSubmitMutation({
 
 ### Fetch Policies
 
-| Policy | Use When |
+| Policy | 使用時機 |
 |--------|----------|
-| `cache-first` | Data rarely changes |
-| `cache-and-network` | Want fast + fresh (default) |
-| `network-only` | Always need latest |
-| `no-cache` | Never cache (rare) |
+| `cache-first` | Data 很少變 |
+| `cache-and-network` | 要快又要新鮮（default） |
+| `network-only` | 一定要最新資料 |
+| `no-cache` | 永不 cache（少見） |
 
-### Common Options
+### 常用 Options
 
 ```typescript
 useGetItemsQuery({
@@ -191,7 +191,7 @@ useGetItemsQuery({
 
 ## Optimistic Updates
 
-For instant UI feedback:
+用來提供即時 UI feedback：
 
 ```typescript
 const [toggleFavorite] = useToggleFavoriteMutation({
@@ -210,16 +210,16 @@ const [toggleFavorite] = useToggleFavoriteMutation({
 });
 ```
 
-### When NOT to Use Optimistic Updates
+### 何時不要使用 Optimistic Updates
 
-- Operations that can fail validation
-- Operations with server-generated values
-- Destructive operations (delete)
-- Operations affecting other users
+- 可能 validation fail 的 operation
+- 使用 server-generated value 的 operation
+- Destructive operation（delete）
+- 會影響其他 users 的 operation
 
 ## Fragments
 
-For reusable field selections:
+可重複使用的 field selection：
 
 ```graphql
 # src/graphql/fragments/ItemFields.gql
@@ -232,7 +232,7 @@ fragment ItemFields on Item {
 }
 ```
 
-Use in queries:
+在 queries 中使用：
 
 ```graphql
 query GetItems {
@@ -246,9 +246,9 @@ query GetItems {
 
 ```typescript
 // WRONG - Inline gql
-const GET_ITEMS = gql`
+const GET_ITEMS = gql\`
   query GetItems { items { id } }
-`;
+\`;
 
 // CORRECT - Use .gql file + generated hook
 import { useGetItemsQuery } from './GetItems.generated';
@@ -285,8 +285,8 @@ npm run gql:typegen
 npm run sync-types
 ```
 
-## Integration with Other Skills
+## 與其他 Skills 整合
 
-- **react-ui-patterns**: Loading/error/empty states for queries
-- **testing-patterns**: Mock generated hooks in tests
-- **formik-patterns**: Mutation submission patterns
+- **react-ui-patterns**：Queries 的 loading/error/empty states
+- **testing-patterns**：Tests 中 mock generated hooks
+- **formik-patterns**：Mutation submission patterns
