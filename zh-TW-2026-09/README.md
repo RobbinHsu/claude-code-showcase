@@ -246,7 +246,7 @@ Hook handler 也不只 shell command，可依事件使用 HTTP、prompt / agent 
 
 MCP 仍是 Claude Code 連外部系統的主要方式，但 2026/09 更適合優先採 remote HTTP / OAuth，而不是假設每個服務都有固定的舊 stdio npm package。
 
-本 repo [.mcp.json](.mcp.json) 示範：
+本 repo [.mcp.json](.mcp.json) 示範官方／固定 endpoint，以及以 environment variable 提供 endpoint 的 JIRA、Linear、internal MCP。JIRA/Linear 的實際 URL 與 authentication 依你採用的 MCP provider 決定：
 
 ```json
 {

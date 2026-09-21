@@ -1,5 +1,19 @@
 {
   "mcpServers": {
+    "jira": {
+      "type": "http",
+      "url": "${JIRA_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${JIRA_MCP_TOKEN}"
+      }
+    },
+    "linear": {
+      "type": "http",
+      "url": "${LINEAR_MCP_URL}",
+      "headers": {
+        "Authorization": "Bearer ${LINEAR_MCP_TOKEN}"
+      }
+    },
     "github": {
       "type": "http",
       "url": "https://api.githubcopilot.com/mcp/",
